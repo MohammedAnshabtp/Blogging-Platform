@@ -3,7 +3,7 @@ import { TextField, Box, Button, Typography, styled } from "@mui/material";
 
 const Component = styled(Box)`
     width: 400px;
-    margin: 50px auto;
+    margin: 55px auto;
     box-shadow: 5px 2px 5px 2px rgb(0 0 0 /0.6);
 `;
 const Image = styled("img")({
