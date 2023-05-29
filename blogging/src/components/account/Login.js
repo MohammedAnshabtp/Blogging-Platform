@@ -25,7 +25,7 @@ const Wrapper = styled(Box)`
     & > div,
     & > button,
     & > p {
-        margin-top: 20px;
+        margin-top: 30px;
     }
 `;
 
@@ -41,7 +41,7 @@ const SignupButton = styled(Button)`
     text-transform: none;
     background: #fff;
     color: #2874f0;
-    height: 48px;
+    height: 58px;
     border-radius: 2px;
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
 `;
@@ -96,7 +96,6 @@ const Login = ({ isUserAuthenticated }) => {
         let response = await API.userLogin(login);
         if (response.isSuccess) {
             showError("");
-
             sessionStorage.setItem(
                 "accessToken",
                 `Bearer ${response.data.accessToken}`
@@ -189,7 +188,7 @@ const Login = ({ isUserAuthenticated }) => {
                             name="password"
                             label="Enter Password"
                         />
-
+                        {error && <Typography>{error}</Typography>}
                         <SignupButton onClick={() => signupUser()}>
                             Signup
                         </SignupButton>
