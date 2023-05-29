@@ -11,7 +11,7 @@ const API_URL = "http://localhost:8000";
 
 const axiosInstance = axios.create({
     baseURL: API_URL,
-    timeout: 100000,
+    timeout: 15000,
     headers: {
         "content-type": "application/json",
     },
@@ -56,19 +56,15 @@ const processResponse = (response) => {
 };
 
 const ProcessError = async (error) => {
-    if (error.response) {
-        // Request made and server responded with a status code
-        // that falls out of the range of 2xx
-        if (error.response?.status === 403) {
-            sessionStorage.clear();
-        } else {
-            console.log("ERROR IN RESPONSE: ", error.toJSON());
-            return {
-                isError: true,
-                msg: API_NOTIFICATION_MESSAGES.responseFailure,
-                code: error.response.status,
-            };
-        }
+    if (error.response && error.response.status === 403) {
+        sessionStorage.clear();
+    } else if (error.response) {
+        console.log("ERROR IN RESPONSE: ", error.toJSON());
+        return {
+            isError: true,
+            msg: API_NOTIFICATION_MESSAGES.responseFailure,
+            code: error.response.status,
+        };
     } else if (error.request) {
         // The request was made but no response was received
         console.log("ERROR IN RESPONSE: ", error.toJSON());
