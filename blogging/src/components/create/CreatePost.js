@@ -55,7 +55,7 @@ const initialPost = {
     categories: "",
     createdDate: new Date(),
 };
-const CreatePost = () => {
+const createPost = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -127,4 +127,4 @@ const CreatePost = () => {
     );
 };
 
-export default CreatePost;
+export default createPost;
