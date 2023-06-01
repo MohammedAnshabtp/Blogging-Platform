@@ -4,6 +4,7 @@ import {
     signupUser,
     logoutUser,
 } from "../controller/user-controller.js";
+import { uploadImage, getImage } from "../controller/image-controller.js";
 import {
     authenticateToken,
     createNewToken,
@@ -15,8 +16,12 @@ import {
     getPost,
     getAllPosts,
 } from "../controller/post-controller.js";
-
-import uploadImage from "../utils/upload.js";
+import {
+    newComment,
+    getComments,
+    deleteComment,
+} from "../controller/comment-controller.js";
+import upload from "../utils/upload.js";
 const router = express.Router();
 
 router.post("/login", loginUser);

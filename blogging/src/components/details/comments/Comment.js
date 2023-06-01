@@ -27,6 +27,7 @@ const StyledDate = styled(Typography)`
     font-size: 14px;
     color: #878787;
 `;
+a2VQiB
 
 const DeleteIcon = styled(Delete)`
     margin-left: auto;

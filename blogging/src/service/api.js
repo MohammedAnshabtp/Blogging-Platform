@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { API_NOTIFICATION_MESSAGES, SERVICE_URLS } from "../constants/config";
 import {
     getAccessToken,
@@ -56,15 +57,17 @@ const processResponse = (response) => {
 };
 
 const ProcessError = async (error) => {
-    if (error.response && error.response.status === 403) {
-        sessionStorage.clear();
-    } else if (error.response) {
-        console.log("ERROR IN RESPONSE: ", error.toJSON());
-        return {
-            isError: true,
-            msg: API_NOTIFICATION_MESSAGES.responseFailure,
-            code: error.response.status,
-        };
+    if (error.response) {
+        if (error.response?.status === 403) {
+            sessionStorage.clear();
+        } else {
+            console.log("ERROR IN RESPONSE: ", error.toJSON());
+            return {
+                isError: true,
+                msg: API_NOTIFICATION_MESSAGES.responseFailure,
+                code: error.response.status,
+            };
+        }
     } else if (error.request) {
         // The request was made but no response was received
         console.log("ERROR IN RESPONSE: ", error.toJSON());

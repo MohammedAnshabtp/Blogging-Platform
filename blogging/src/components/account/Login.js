@@ -93,38 +93,50 @@ const Login = ({ isUserAuthenticated }) => {
     };
 
     const loginUser = async () => {
-        let response = await API.userLogin(login);
-        if (response.isSuccess) {
-            showError("");
-            sessionStorage.setItem(
-                "accessToken",
-                `Bearer ${response.data.accessToken}`
-            );
-            sessionStorage.setItem(
-                "refreshToken",
-                `Bearer ${response.data.refreshToken}`
-            );
-            setAccount({
-                name: response.data.name,
-                username: response.data.username,
-            });
+        try {
+            let response = await API.userLogin(login);
+            console.log("ENTHA PRESHNAM", response);
+            if (response.isSuccess) {
+                showError("");
+                sessionStorage.setItem(
+                    "accessToken",
+                    `Bearer ${response.data.accessToken}`
+                );
+                sessionStorage.setItem(
+                    "refreshToken",
+                    `Bearer ${response.data.refreshToken}`
+                );
+                setAccount({
+                    name: response.data.name,
+                    username: response.data.username,
+                });
 
-            isUserAuthenticated(true);
-            setLogin(loginInitialValues);
-            navigate("/");
-        } else {
-            showError("Something went wrong! please try again later");
+                isUserAuthenticated(true);
+                setLogin(loginInitialValues);
+                navigate("/");
+            } else {
+                showError("Something went wrong! Please try again later.");
+            }
+        } catch (error) {
+            console.error(error);
+            showError("An error occurred. Please try again later.");
         }
     };
 
     const signupUser = async () => {
-        let response = await API.userSignup(signup);
-        if (response.isSuccess) {
-            showError("");
-            setSignup(signupInitialValues);
-            toggleAccount("login");
-        } else {
-            showError("Something went wrong! please try again later");
+        try {
+            let response = await API.userSignup(signup);
+            if (response.isSuccess) {
+                showError("");
+                setSignup(signupInitialValues);
+                toggleAccount("login");
+            } else {
+                showError("Something went wrong! Please try again later.");
+            }
+        } catch (error) {
+            // Handle any errors that occurred during the API call
+            console.error(error);
+            showError("An error occurred. Please try again later.");
         }
     };
     const toggleSignup = () => {
