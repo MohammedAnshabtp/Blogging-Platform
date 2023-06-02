@@ -95,7 +95,7 @@ const Login = ({ isUserAuthenticated }) => {
     const loginUser = async () => {
         try {
             let response = await API.userLogin(login);
-            console.log("ENTHA PRESHNAM", response);
+            console.log("LALAL", response);
             if (response.isSuccess) {
                 showError("");
                 sessionStorage.setItem(
