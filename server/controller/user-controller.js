@@ -28,7 +28,6 @@ export const signupUser = async (request, response) => {
 export const loginUser = async (request, response) => {
     try {
         let user = await User.findOne({ username: request.body.username });
-        console.log("Enthannu ith", user);
         if (!user) {
             return response
                 .status(400)
