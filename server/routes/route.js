@@ -19,6 +19,7 @@ import {
 import {
     newComment,
     getComments,
+    getAllComments,
     deleteComment,
 } from "../controller/comment-controller.js";
 import upload from "../utils/upload.js";
@@ -41,6 +42,7 @@ router.post("/file/upload", upload.single("file"), uploadImage);
 router.get("/file/:filename", getImage);
 
 router.post("/comment/new", authenticateToken, newComment);
+router.get("/comments", authenticateToken, getAllComments);
 router.get("/comments/:id", authenticateToken, getComments);
 router.delete("/comment/delete/:id", authenticateToken, deleteComment);
 

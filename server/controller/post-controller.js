@@ -27,9 +27,7 @@ export const updatePost = async (request, response) => {
 };
 export const deletePost = async (request, response) => {
     try {
-        const post = await Post.findById(request.params.id);
-
-        await post.delete();
+        const post = await Post.deleteOne({_id: request.params.id});
 
         response.status(200).json("post deleted successfully");
     } catch (error) {
