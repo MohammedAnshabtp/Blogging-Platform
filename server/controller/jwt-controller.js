@@ -6,8 +6,9 @@ dotenv.config();
 
 export const authenticateToken = (request, response, next) => {
     const authHeader = request.headers.authorization;
-    const token = authHeader && authHeader.split("")[1];
 
+    const token = authHeader && authHeader.split(" ")[1];
+    console.log("uuuu", token, authHeader);
     if (token == null) {
         return response.status(401).json({ msg: "token is missing" });
     }
@@ -21,7 +22,7 @@ export const authenticateToken = (request, response, next) => {
 };
 
 export const createNewToken = async (request, response) => {
-    const refreshToken = request.body.token.split("")[1];
+    const refreshToken = request.body.token.split(" ")[1];
     if (!refreshToken) {
         return response.status(401).json({ msg: "Refresh token is missing" });
     }
