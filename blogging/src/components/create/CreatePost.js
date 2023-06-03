@@ -10,7 +10,7 @@ import {
 import { AddCircle as Add } from "@mui/icons-material";
 import { API } from "../../service/api";
 import { DataContext } from "../../context/DataProvider";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Container = styled(Box)(({ theme }) => ({
     margin: "50px 100px",
@@ -57,7 +57,7 @@ const initialPost = {
 };
 
 const CreatePost = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
 
     const [post, setPost] = useState(initialPost);
@@ -76,21 +76,18 @@ const CreatePost = () => {
                 data.append("file", file);
 
                 const response = await API.uploadFile(data);
-                setPost({ ...post, picture: response.data });
+                post.picture = response.data;
             }
         };
 
         getImage();
-        setPost({
-            ...post,
-            categories: location.search?.split("=")[1] || "All",
-            username: account.username,
-        });
+        post.categories = location.search?.split("=")[1] || "All";
+        post.username = account.username;
     }, [file]);
 
     const savePost = async () => {
         await API.createPost(post);
-        history.push("/");
+        navigate("/");
     };
 
     const handleChange = (e) => {
@@ -116,7 +113,11 @@ const CreatePost = () => {
                     name="title"
                     placeholder="Title"
                 />
-                <Button onClick={savePost} variant="contained" color="primary">
+                <Button
+                    onClick={() => savePost()}
+                    variant="contained"
+                    color="primary"
+                >
                     Publish
                 </Button>
             </StyledFormControl>
@@ -125,7 +126,7 @@ const CreatePost = () => {
                 rowsMin={5}
                 placeholder="Tell your story..."
                 name="description"
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
             />
         </Container>
     );
