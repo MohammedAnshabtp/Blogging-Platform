@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 import { Link, useSearchParams } from "react-router-dom";
-import { categories } from "../../constants/data";
+import { categories } from "../../constants/data.js";
 
 const StyledTable = styled(Table)`
     border: 1px solid rgba(224, 224, 224, 1);

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-
 import {
     styled,
     Box,
@@ -9,10 +8,9 @@ import {
     FormControl,
 } from "@mui/material";
 import { AddCircle as Add } from "@mui/icons-material";
-import { useNavigate, useLocation } from "react-router-dom";
-
 import { API } from "../../service/api";
 import { DataContext } from "../../context/DataProvider";
+import { useLocation, useHistory } from "react-router-dom";
 
 const Container = styled(Box)(({ theme }) => ({
     margin: "50px 100px",
@@ -20,6 +18,7 @@ const Container = styled(Box)(({ theme }) => ({
         margin: 0,
     },
 }));
+
 const Image = styled("img")({
     width: "100%",
     height: "50vh",
@@ -47,6 +46,7 @@ const Textarea = styled(TextareaAutosize)`
         outline: none;
     }
 `;
+
 const initialPost = {
     title: "",
     description: "",
@@ -55,8 +55,9 @@ const initialPost = {
     categories: "",
     createdDate: new Date(),
 };
-const createPost = () => {
-    const navigate = useNavigate();
+
+const CreatePost = () => {
+    const history = useHistory();
     const location = useLocation();
 
     const [post, setPost] = useState(initialPost);
@@ -66,6 +67,7 @@ const createPost = () => {
     const url = post.picture
         ? post.picture
         : "https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80";
+
     useEffect(() => {
         const getImage = async () => {
             if (file) {
@@ -74,16 +76,21 @@ const createPost = () => {
                 data.append("file", file);
 
                 const response = await API.uploadFile(data);
-                post.picture = response.data;
+                setPost({ ...post, picture: response.data });
             }
         };
+
         getImage();
-        post.categories = location.search?.split("=")[1] || "All";
-        post.username = account.username;
+        setPost({
+            ...post,
+            categories: location.search?.split("=")[1] || "All",
+            username: account.username,
+        });
     }, [file]);
+
     const savePost = async () => {
         await API.createPost(post);
-        navigate("/");
+        history.push("/");
     };
 
     const handleChange = (e) => {
@@ -105,26 +112,23 @@ const createPost = () => {
                     onChange={(e) => setFile(e.target.files[0])}
                 />
                 <InputTextField
-                    onChange={(e) => handleChange(e)}
+                    onChange={handleChange}
                     name="title"
                     placeholder="Title"
                 />
-                <Button
-                    onClick={() => savePost()}
-                    variant="contained"
-                    color="primary"
-                >
+                <Button onClick={savePost} variant="contained" color="primary">
                     Publish
                 </Button>
             </StyledFormControl>
+
             <Textarea
                 rowsMin={5}
                 placeholder="Tell your story..."
                 name="description"
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
             />
         </Container>
     );
 };
 
-export default createPost;
+export default CreatePost;
